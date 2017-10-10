@@ -6,18 +6,21 @@ from Tkinter import StringVar
 from tkFileDialog import askopenfilename, askdirectory
 
 from modules.file_rename import FileRename
+from modules.char_replace import CharReplace
 
 
 class ShowToolkitGui:
 
+    # Initial data used.
     directory_path = None
     file_path = None
-
     DIRECTORY = 'directory'
     FILE = 'file'
     last_selected = None
 
+    # Initialize module classes.
     file_rename = FileRename()
+    char_replace = CharReplace()
 
     def __init__(self, master):
         self.master = master
@@ -134,19 +137,27 @@ class ShowToolkitGui:
         """
         Call the rename operation on directory or file selected.
         """
+        if not self.last_selected:
+            return
+
         if self.last_selected == self.DIRECTORY:
             progress_message = self.file_rename.process_directory(self.directory_path)
         elif self.last_selected == self.FILE:
             progress_message = self.file_rename.rename_file(self.file_path)
-        else:
-            return
-
         self.update_progress_text(progress_message)
 
     def process_character_replace(self):
         """
+        Call the char replace operation on directory or file selected.
         """
+        if not self.last_selected:
+            return
 
+        if self.last_selected == self.DIRECTORY:
+            progress_message = self.char_replace.process_directory(self.directory_path)
+        elif self.last_selected == self.FILE:
+            progress_message = self.char_replace.process_file(self.file_path)
+        self.update_progress_text(progress_message)
 
     def update_progress_text(self, new_text):
         """
