@@ -5,11 +5,11 @@ import io
 import re
 
 # Allowed types of files to be renamed.
-ALLOWED_FILE_TYPES = (".srt", ".sub", ".avi", ".mp4", ".mkv")
+ALLOWED_FILE_TYPES = ('.srt', '.sub', '.avi', '.mp4', '.mkv')
 
 # Format to rename the file.
 # WARNING: make sure to keep both placeholders (%s) or the script will fail.
-FILE_RENAME_FORMAT = "S%sE%s"
+FILE_RENAME_FORMAT = 'S%sE%s'
 
 
 class FileRename():
@@ -22,7 +22,7 @@ class FileRename():
 		- use the numbers to rename the file
 		"""
 		if not self.allowed_file_type(file_name):
-			return "--> %s is not supported. No action taken." % file_name
+			return '--> %s is not supported. No action taken.' % file_name
 
 		# Get the general information about the file being renamed.
 		file_location = os.path.dirname(file_name)
@@ -34,7 +34,7 @@ class FileRename():
 		# We expect at least two numbers.
 		file_numbers_temp = re.findall(r'\d+', original_file_name)
 		if len(file_numbers_temp) < 2:
-			return "--> %s is supported but doesn't have 2 numbers in its name. No action taken." % file_name
+			return '--> %s is supported but does not have 2 numbers in its name. No action taken.' % file_name
 		# Kick all numbers with more then 2 digits, those are not tv show for sure.
 		# We only run until we get two numbers, since thats what we require.
 		file_numbers = []
@@ -45,7 +45,7 @@ class FileRename():
 			if len(fn) > 2:
 				continue
 			if len(fn) == 1:
-				fn = "0%s" % fn
+				fn = '0%s' % fn
 			file_numbers.append(fn)
 
 		# Generate new name for the file and full path with extension to it.
@@ -54,7 +54,7 @@ class FileRename():
 
 		# Rename the file.
 		os.rename(file_name, new_file_full_name)
-		return "--> %s successfuly renamed to %s." % (original_file_name, new_file_name)
+		return '--> %s successfuly renamed to %s.' % (original_file_name, new_file_name)
 
 	def process_directory(self, dir_path):
 		"""
@@ -66,16 +66,16 @@ class FileRename():
 		return_messages = []
 		files = os.listdir(dir_path)
 		if files:
-			return_messages.append("Directory detected, attempting to process files:")
+			return_messages.append('Directory detected, attempting to process files:')
 			for current_file in files:
 				file_path = os.path.join(dir_path, current_file)
 				# Try to rename if its a file, not another directory.
 				if not os.path.isdir(file_path):
 					return_messages.append(self.rename_file(file_path))
 				else:
-					return_messages.append("--> %s is a directory. No action taken." % file_path)
+					return_messages.append('--> %s is a directory. No action taken.' % file_path)
 		else:
-			return_messages.append("Directory %s is empty. Aborting." % dir_path)
+			return_messages.append('Directory %s is empty. Aborting.' % dir_path)
 
 		return return_messages
 

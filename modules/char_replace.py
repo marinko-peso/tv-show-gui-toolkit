@@ -5,20 +5,20 @@ import io
 
 # Characters to be replaced in the file content.
 CHARS_TO_REPLACE = {
-	"È": "Č",
-	"Æ": "Ć",
-	"è": "č",
-	"æ": "ć",
-	"ð": "đ"
+	'È': 'Č',
+	'Æ': 'Ć',
+	'è': 'č',
+	'æ': 'ć',
+	'ð': 'đ'
 }
 # Allowed types of files to be processed.
-ALLOWED_FILE_TYPES = (".srt", ".txt", ".sub")
+ALLOWED_FILE_TYPES = ('.srt', '.txt', '.sub')
 
 # Define encoding values.
 # There is no way to apsulutely correctly quess origin encoding so doing an educated guess.
 # Change settings if working with different origin encoding.
-SOURCE_ENCODING = "cp1250"
-DESTINATION_ENCODING = "utf8"
+SOURCE_ENCODING = 'cp1250'
+DESTINATION_ENCODING = 'utf8'
 
 
 class CharReplace():
@@ -34,9 +34,9 @@ class CharReplace():
 		- write the new content to the file and close it
 		"""
 		if not self.allowed_file_type(file_name):
-			return "--> %s is not supported. No action taken." % file_name
+			return '--> %s is not supported. No action taken.' % file_name
 
-		read_file = io.open(file_name, "r", encoding=SOURCE_ENCODING)
+		read_file = io.open(file_name, 'r', encoding=SOURCE_ENCODING)
 		# Only start the process if the file is not already processed or already has characters.
 		read_file_content = read_file.read()
 		char_found, char_found_message = self.is_file_already_processed(read_file_content, file_name)
@@ -46,11 +46,11 @@ class CharReplace():
 			read_file_content = read_file_content.encode(DESTINATION_ENCODING)
 			read_file.close()
 
-			write_file = io.open(file_name, "w", encoding=DESTINATION_ENCODING)
+			write_file = io.open(file_name, 'w', encoding=DESTINATION_ENCODING)
 			write_file_content = self.replace_characters(read_file_content)
 			write_file.write(write_file_content)
 			write_file.close()
-			return "--> %s successfuly processed." % file_name
+			return '--> %s successfuly processed.' % file_name
 
 	def is_file_already_processed(self, file_content, file_name):
 		"""
@@ -58,14 +58,14 @@ class CharReplace():
 		In case they exist we skip this file.
 		"""
 		char_found = False
-		message = ""
+		message = ''
 		file_content_to_search = file_content.encode(SOURCE_ENCODING)
 		for des_char, char in CHARS_TO_REPLACE:
 			if char in file_content_to_search:
 				char_found = True
 				break
 		if char_found:
-			message = "--> %s already processed, skipping..." % file_name
+			message = '--> %s already processed, skipping...' % file_name
 		return char_found, message
 
 	def process_directory(self, dir_name):
@@ -74,17 +74,16 @@ class CharReplace():
 		- get the list of files available in the directory
 		- in no files are found nothing will happen
 		- in some files are detected print the message we found a directory and process them one by one
-		- if one of the "files" is a directory, call this method again to process all files inside of it
 		"""
 		return_messages = []
 		files = os.listdir(dir_name)
 		if files:
-			return_messages.append("Directory detected, attempting to process files:")
+			return_messages.append('Directory detected, attempting to process files:')
 			for current_file in files:
 				file_path = os.path.join(dir_name, current_file)
 				return_messages.append(self.process_file(file_path))
 		else:
-			return_messages.append("Directory %s is empty. Aborting." % dir_name)
+			return_messages.append('Directory %s is empty. Aborting.' % dir_name)
 
 		return return_messages
 

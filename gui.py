@@ -24,7 +24,7 @@ class ShowToolkitGui:
 
     def __init__(self, master):
         self.master = master
-        self.master.title('TV Show Files Tookit')
+        self.master.title('TV Show Tookit')
 
         # Create app layout.
         self.create_custom_layout()
