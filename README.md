@@ -18,7 +18,7 @@ python3 gui.py
 
 
 ### Windows Executable
-In the Windows/dist directory an .exe file is available containing the app. Its completely standalone so can also be used as a plug and play solution.
+In the standalones/windows directory an .exe file is available containing the app. Its completely standalone so can also be used as a plug and play solution.
 Windows executable created using [PyInstaller](http://www.pyinstaller.org/).
 
 
